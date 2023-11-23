@@ -134,3 +134,6 @@ $RECYCLE.BIN/
 _NCrunch*
 .vs/Tetris/v17/.suo
 .vs/Tetris/DesignTimeBuild/.dtbcache.v2
+*.bin
+*.v2
+.vs/Tetris/v17/.suo
