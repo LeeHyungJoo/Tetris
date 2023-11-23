@@ -1,12 +1,12 @@
 # Tetris
 
 ### Commit Flag
-[Style] -> Coding Convention, Bracket(brace)..
+`[Style]`  Coding Convention, Bracket(brace)..
 
-[Fix] -> Fix Bug or Something
+`[Fix]`  Fix Bug or Something
 
-[Feat] -> Add Vew Feature
+`[Feat]`  Add Vew Feature
 
-[Rename] -> Just Rename Files
+`[Rename]`  Just Rename Files
 
-[Remove] -> Remove The Files
+`[Remove]`  Remove The Files
