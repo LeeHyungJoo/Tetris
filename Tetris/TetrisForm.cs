@@ -8,16 +8,18 @@ namespace Tetris
         private (int y, int x) _boardInitCoord;
         private int _size;
 
-        private Pen gridPen;
-        private Brush brush;
+        private Pen _gridPen;
+        private Brush _placedTileBrush;
+        private Brush _currentTileBrush;
 
         private int[] _masking;
 
         public TetrisForm()
         {
             InitializeComponent();
-            gridPen = new Pen(Color.DarkGray, 0.1f);
-            brush = new SolidBrush(Color.Azure);
+            _gridPen = new Pen(Color.DarkGray, 0.1f);
+            _placedTileBrush = new SolidBrush(Color.Beige);
+            _currentTileBrush = new SolidBrush(Color.AliceBlue);
 
             _board = new Board(24, 10)!;
             _size = 18;
@@ -32,6 +34,16 @@ namespace Tetris
 
         private void DrawUI(Graphics g)
         {
+            //OutLine
+            g.DrawRectangle(
+                _gridPen, 
+                _boardInitCoord.x - 1,
+                _boardInitCoord.y - 1,
+                _size * _board.Width + 1 ,
+                _size * _board.Height + 1
+                );
+
+            //Grid
             List<Rectangle> placedRectList = new List<Rectangle>();
             for (int y = 0; y < _board.Height; y++)
             {
@@ -42,8 +54,7 @@ namespace Tetris
                         _boardInitCoord.y + y * _size,
                         _size - 1, _size - 1);
 
-                    g.DrawRectangle(gridPen, rect);
-
+                    g.DrawRectangle(_gridPen, rect);
 
                     if ((_board.Placed[y] & _masking[x]) == _masking[x])
                     {
@@ -52,9 +63,10 @@ namespace Tetris
                 }
             }
 
+            //Placed
             if (placedRectList.Count > 0)
             {
-                g.FillRectangles(brush, placedRectList.ToArray());
+                g.FillRectangles(_placedTileBrush, placedRectList.ToArray());
             }
         }
 
