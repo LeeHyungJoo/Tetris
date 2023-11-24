@@ -1,6 +1,8 @@
 # Tetris
 
 ### Commit Flag
+`[Refactor]` Refactoring
+
 `[Style]`  Coding Convention, Bracket(brace)..
 
 `[Fix]`  Fix Bug or Something
