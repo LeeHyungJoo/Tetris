@@ -16,7 +16,7 @@ class TileFactory
 
     private static readonly Lazy<TileFactory> _instance = new Lazy<TileFactory>(() => new TileFactory());
 
-    private Dictionary<int, int[][][]> _patternInfos = new Dictionary<int, int[][][]>();
+    private Dictionary<int, int[][]> _patternInfos = new Dictionary<int, int[][]>();
     private Random _random = new Random();
 
     public void MakeData()
@@ -31,8 +31,7 @@ class TileFactory
 
         foreach (var td in tileData)
         {
-            _patternInfos!.Add(td.Key, new int[4][][]);
-            var target = _patternInfos[td.Key];
+            int[][][] target = new int[4][][];
             target[0] = td.Value.Coords!;
 
             for (int d = 1; d < 4; d++)
@@ -48,6 +47,33 @@ class TileFactory
                     {
                         target[d][idxC][idxR] = target[d - 1][idxR][idxC];
                     }
+                }
+            }
+
+           _patternInfos.Add(td.Key, new int[4][]);
+            var pattern = _patternInfos[td.Key];
+
+            for (int d = 0; d < 4; d++)
+            {
+                int sizeR = target[d].Length;
+                int sizeC = target[d][0].Length;
+
+                pattern[d] = new int[sizeR];
+                for (int idxR = 0; idxR < sizeR; idxR++)
+                {
+                    int value = 0;
+
+                    for (int idxC = 0; idxC < sizeC; idxC++)
+                    {
+                        if (target[d][idxR][idxC] == 0)
+                        {
+                            continue;
+                        }
+
+                        value |= (1 << idxC);
+                    }
+
+                    pattern[d][idxR] = value;
                 }
             }
         }

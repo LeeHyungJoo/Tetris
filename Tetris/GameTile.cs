@@ -8,9 +8,9 @@ class GameTile
     public int X { get; set; }
     public int Y { get; set; }
     public int Direction { get; set; }
-    public int[][][]? Patterns { get; private init; }
+    public int[][]? Patterns { get; private init; }
 
-    public GameTile(in int[][][] patterns)
+    public GameTile(in int[][] patterns)
     {
         Patterns = patterns;
         Console.WriteLine($"Create GameTile {Type}");
