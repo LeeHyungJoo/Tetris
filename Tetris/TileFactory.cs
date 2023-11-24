@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualBasic.FileIO;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
@@ -30,33 +31,27 @@ class TileFactory
 
         foreach (var td in tileData)
         {
-            SetPatternsBy4Directions(td.Key, td.Value.Coords!);
-        }
-    }
+            _patternInfos!.Add(td.Key, new int[4][][]);
+            var target = _patternInfos[td.Key];
+            target[0] = td.Value.Coords!;
 
-    private void SetPatternsBy4Directions(int type, int[][] coord)
-    {
-        _patternInfos!.Add(type, new int[4][][]);
-        var target = _patternInfos[type];
-        target[0] = coord;
-
-        for (int d = 1; d < 4; d++)
-        {
-            int rowSize = target[d - 1].Length;
-            int colSize = target[d - 1][0].Length;
-
-            target[d] = new int[colSize][];
-            for(int idxC = 0; idxC < colSize; idxC++)
+            for (int d = 1; d < 4; d++)
             {
-                target[d][idxC] = new int[rowSize];
-                for (int idxR = 0; idxR < rowSize; idxR++)
+                int sizeR = target[d - 1].Length;
+                int sizeC = target[d - 1][0].Length;
+
+                target[d] = new int[sizeC][];
+                for (int idxC = 0; idxC < sizeC; idxC++)
                 {
-                    target[d][idxC][idxR] = target[d - 1][idxR][idxC];
+                    target[d][idxC] = new int[sizeR];
+                    for (int idxR = 0; idxR < sizeR; idxR++)
+                    {
+                        target[d][idxC][idxR] = target[d - 1][idxR][idxC];
+                    }
                 }
             }
         }
     }
-
 
     public GameTile CreateGameTile()
     {
