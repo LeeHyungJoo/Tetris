@@ -12,23 +12,26 @@ namespace Tetris
         private Brush _placedTileBrush;
         private Brush _currentTileBrush;
 
-        private int[] _masking;
+        private (int y, int x) _tileStartCoord;
+
+        private int[] _xMasked;
 
         public TetrisForm()
         {
             InitializeComponent();
             _gridPen = new Pen(Color.DarkGray, 0.1f);
-            _placedTileBrush = new SolidBrush(Color.Beige);
-            _currentTileBrush = new SolidBrush(Color.AliceBlue);
+            _placedTileBrush = new SolidBrush(Color.PaleGreen);
+            _currentTileBrush = new SolidBrush(Color.OrangeRed);
 
             _board = new Board(24, 10)!;
             _size = 18;
             _boardInitCoord = (20, 20);
+            _tileStartCoord = (0, 4);
 
-            _masking = new int[10];
+            _xMasked = new int[10];
             for(int i = 0; i < 10; i++)
             {
-                _masking[i] = (1 << i);
+                _xMasked[i] = (1 << i);
             }
         }
 
@@ -45,6 +48,7 @@ namespace Tetris
 
             //Grid
             List<Rectangle> placedRectList = new List<Rectangle>();
+            List<Rectangle> currentRectList = new List<Rectangle>();
             for (int y = 0; y < _board.Height; y++)
             {
                 for (int x = 0; x < _board.Width; x++)
@@ -56,17 +60,28 @@ namespace Tetris
 
                     g.DrawRectangle(_gridPen, rect);
 
-                    if ((_board.Placed[y] & _masking[x]) == _masking[x])
+                    if ((_board.Placed[y] & _xMasked[x]) == _xMasked[x])
                     {
                         placedRectList.Add(rect);
+                    }
+
+                    if (y <_board.CurrentTile?.Patterns?[0].Length &&
+                        (_board.CurrentTile?.Patterns?[0][y] << _tileStartCoord.x & _xMasked[x]) == _xMasked[x])
+                    {
+                        currentRectList.Add(rect);
                     }
                 }
             }
 
-            //Placed
+            //Placed Tile
             if (placedRectList.Count > 0)
             {
                 g.FillRectangles(_placedTileBrush, placedRectList.ToArray());
+            }
+
+            //Current Tile
+            {
+                g.FillRectangles(_currentTileBrush, currentRectList.ToArray());
             }
         }
 
