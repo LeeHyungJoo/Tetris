@@ -5,8 +5,15 @@
 *.suo
 *.user
 *.sln.docstates
+*.editorconfig
+*.v2
+*.v17
+*.vs
+*.sqlite
+*.sqlite-journal
 
 # Build results
+
 
 [Dd]ebug/
 [Rr]elease/
@@ -131,21 +138,4 @@ $RECYCLE.BIN/
 # Mac desktop service store files
 .DS_Store
 
-_NCrunch*
-.vs/Tetris/v17/.suo
-.vs/Tetris/DesignTimeBuild/.dtbcache.v2
-*.bin
-*.v2
-.vs/Tetris/v17/.suo
-*.editorconfig
-*.cache
-*.cache
-.vs/toy_tetris/v17/.wsuo
-.vs/Tetris/v17/.suo
-*.sqlite
-.vs/ProjectSettings.json
-Tetris/obj/project.assets.json
-Tetris/obj/project.nuget.cache
-Tetris/obj/Tetris.csproj.nuget.dgspec.json
-Tetris/obj/Tetris.csproj.nuget.g.props
-*.sqlite-journal
+
