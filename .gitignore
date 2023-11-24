@@ -137,3 +137,14 @@ _NCrunch*
 *.bin
 *.v2
 .vs/Tetris/v17/.suo
+*.editorconfig
+*.cache
+*.cache
+.vs/toy_tetris/v17/.wsuo
+.vs/Tetris/v17/.suo
+*.sqlite
+.vs/ProjectSettings.json
+Tetris/obj/project.assets.json
+Tetris/obj/project.nuget.cache
+Tetris/obj/Tetris.csproj.nuget.dgspec.json
+Tetris/obj/Tetris.csproj.nuget.g.props
