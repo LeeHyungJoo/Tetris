@@ -148,3 +148,4 @@ Tetris/obj/project.assets.json
 Tetris/obj/project.nuget.cache
 Tetris/obj/Tetris.csproj.nuget.dgspec.json
 Tetris/obj/Tetris.csproj.nuget.g.props
+*.sqlite-journal
