@@ -11,5 +11,6 @@ class TileData
     public int Height { get; set; }
     public int Width { get; set; }
     public int[,]? Coords { get; set; }
+    public int[,]? Pivot { get; set; }
     public string? ImgPath { get; set; }
 }

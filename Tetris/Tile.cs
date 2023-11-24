@@ -1,6 +1,0 @@
-﻿
-namespace Tetris;
-class Tile
-{
-
-}
