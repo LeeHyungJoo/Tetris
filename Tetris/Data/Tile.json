@@ -7,25 +7,28 @@
       [ 1 ],
       [ 1 ]
     ],
-    "Pivot": [ 0, 0 ],
+    "PivotX" : 0,
+    "PivotY" : 0,
     "ImgPath": ""
   },
   {
     "Type": 2,
     "Coords": [
-      [ 1 , 1 ],
-      [ 1 , 1 ]
+      [ 1, 1 ],
+      [ 1, 1 ]
     ],
-    "Pivot": [ 0, 0 ],
+    "PivotX": 0,
+    "PivotY": 0,
     "ImgPath": ""
   },
   {
     "Type": 3,
     "Coords": [
-      [ 1, 1, 0],
+      [ 1, 1, 0 ],
       [ 0, 1, 1 ]
     ],
-    "Pivot": [ 0, 0 ],
+    "PivotX": 0,
+    "PivotY": 0,
     "ImgPath": ""
   },
   {
@@ -34,7 +37,8 @@
       [ 0, 1, 1 ],
       [ 1, 1, 0 ]
     ],
-    "Pivot": [ 0, 0 ],
+    "PivotX": 0,
+    "PivotY": 0,
     "ImgPath": ""
   },
   {
@@ -44,7 +48,8 @@
       [ 0, 1 ],
       [ 1, 1 ]
     ],
-    "Pivot": [ 0, 0 ],
+    "PivotX": 0,
+    "PivotY": 0,
     "ImgPath": ""
   },
   {
@@ -54,7 +59,8 @@
       [ 1, 0 ],
       [ 1, 1 ]
     ],
-    "Pivot": [ 0, 0 ],
+    "PivotX": 0,
+    "PivotY": 0,
     "ImgPath": ""
   },
   {
@@ -63,7 +69,8 @@
       [ 1, 1, 1 ],
       [ 0, 1, 0 ]
     ],
-    "Pivot": [ 0, 0 ],
+    "PivotX": 0,
+    "PivotY": 0,
     "ImgPath": ""
   }
 ]
