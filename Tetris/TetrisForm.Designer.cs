@@ -35,7 +35,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(425, 663);
+            ClientSize = new Size(304, 511);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "TetrisForm";
             Text = "Tetris";
