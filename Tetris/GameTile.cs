@@ -1,4 +1,6 @@
 ﻿
+using System.Diagnostics;
+
 namespace Tetris;
 
 class GameTile
@@ -12,29 +14,30 @@ class GameTile
 
     public GameTile(in int[][] patterns)
     {
-        Patterns = patterns;
-        Console.WriteLine($"Create GameTile {Type}");
+        Patterns = patterns!;
+        Debug.WriteLine($"Create GameTile {Type}");
     }
 
     public void Turn()
     {
-        if(State != TileState.Proceeding)
+        if(State != TileState.Active)
         {
-            Console.WriteLine("Invalid State");
+            Debug.WriteLine("Invalid State");
             return;
         }
 
-        Console.WriteLine("Turn Tile");
+        Debug.WriteLine("Turn Tile");
     }
 
     public void Proceed()
     {
-        if (State != TileState.Proceeding)
+        if (State != TileState.Active)
         {
-            Console.WriteLine("Invalid State");
+            Debug.WriteLine("Invalid State");
             return;
         }
 
-        Console.WriteLine("Proceed Tile");
+        Y++;
+        Debug.WriteLine("Proceed Tile");
     }
 }

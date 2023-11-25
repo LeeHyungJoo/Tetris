@@ -1,4 +1,5 @@
 using System.Drawing;
+using System.Timers;
 
 namespace Tetris
 {
@@ -12,12 +13,15 @@ namespace Tetris
         private Brush _placedTileBrush;
         private Brush _currentTileBrush;
 
-        private (int y, int x) _tileStartCoord;
-
         private int[] _xMasked;
+
+        private System.Windows.Forms.Timer _timer;
+
 
         public TetrisForm()
         {
+            DoubleBuffered = true;
+
             InitializeComponent();
             _gridPen = new Pen(Color.DarkGray, 0.1f);
             _placedTileBrush = new SolidBrush(Color.PaleGreen);
@@ -26,13 +30,24 @@ namespace Tetris
             _board = new Board(24, 10)!;
             _size = 18;
             _boardInitCoord = (20, 20);
-            _tileStartCoord = (0, 4);
 
             _xMasked = new int[10];
-            for(int i = 0; i < 10; i++)
+            for (int i = 0; i < 10; i++)
             {
                 _xMasked[i] = (1 << i);
             }
+
+            _board.Start(0,4);
+            _timer = new System.Windows.Forms.Timer();
+
+            _timer.Interval = 100;
+            _timer.Tick += Update!;
+            _timer.Start();
+        }
+
+        void Update(object sender, EventArgs e)
+        {
+            Invalidate();
         }
 
         private void DrawUI(Graphics g)
@@ -48,7 +63,6 @@ namespace Tetris
 
             //Grid
             List<Rectangle> placedRectList = new List<Rectangle>();
-            List<Rectangle> currentRectList = new List<Rectangle>();
             for (int y = 0; y < _board.Height; y++)
             {
                 for (int x = 0; x < _board.Width; x++)
@@ -64,12 +78,6 @@ namespace Tetris
                     {
                         placedRectList.Add(rect);
                     }
-
-                    if (y <_board.CurrentTile?.Patterns?[0].Length &&
-                        (_board.CurrentTile?.Patterns?[0][y] << _tileStartCoord.x & _xMasked[x]) == _xMasked[x])
-                    {
-                        currentRectList.Add(rect);
-                    }
                 }
             }
 
@@ -80,6 +88,33 @@ namespace Tetris
             }
 
             //Current Tile
+            List<Rectangle> currentRectList = new List<Rectangle>();
+            if(_board.CurrentTile != null)
+            {
+                (int offSetY, int offSetX) = (_board.CurrentTile.Y, _board.CurrentTile.X);
+
+                for(int y = 0; y < _board.CurrentTile.Patterns?[0].Length; y++)
+                {
+                    int patternMask = _board.CurrentTile.Patterns[0][y];
+                    patternMask <<= offSetX;
+
+                    for (int x = 0; x < _board.Width; x++)
+                    {
+                        if ((patternMask & _xMasked[x]) == _xMasked[x])
+                        {
+                            var rect = new Rectangle(
+                                _boardInitCoord.x + x * _size,
+                                _boardInitCoord.y + (y + offSetY) * _size,
+                                _size - 1, _size - 1);
+
+                            currentRectList.Add(rect);
+                        }
+                    }
+                }
+
+            }
+
+            if(currentRectList.Count > 0)
             {
                 g.FillRectangles(_currentTileBrush, currentRectList.ToArray());
             }
@@ -90,6 +125,5 @@ namespace Tetris
             base.OnPaint(e);
             DrawUI(e.Graphics);
         }
-
     }
 }

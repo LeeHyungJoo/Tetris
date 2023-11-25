@@ -4,7 +4,6 @@ namespace Tetris;
 enum TileState
 {
     None,
-    Ready,
-    Proceeding,
+    Active,
     Placed
 }

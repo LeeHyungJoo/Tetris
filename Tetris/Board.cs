@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace Tetris;
 
@@ -18,7 +19,7 @@ class Board
 
     private readonly ReadOnlyCollection<int> _ruleCheck;
 
-
+    private System.Timers.Timer _timer;
 
     public Board(int height, int width)
     {
@@ -30,17 +31,28 @@ class Board
         _ruleCheck = new ReadOnlyCollection<int>(ruleCheckArray);
 
         Placed = new int[height];
+
+        _timer = new System.Timers.Timer();
+        _timer.Interval = 1000;
+        _timer.AutoReset = true;
+        _timer.Enabled = false;
+        _timer.Elapsed += Update;
     }
 
-    public void Update()
+    public void Start(int tileY, int tileX)
     {
-        if(CurrentTile != null)
+        CurrentTile = TileFactory.Instance.CreateGameTile();
+        CurrentTile.State = TileState.Active;
+        CurrentTile.Y = tileY;
+        CurrentTile.X = tileX;
+        _timer.Start();
+    }
+
+    private void Update(object? sender, ElapsedEventArgs e)
+    {
+        if (CurrentTile != null)
         {
             CurrentTile.Proceed();
         }
-
     }
-
-
-
 }
