@@ -25,15 +25,20 @@ class Board
         Height = height;
         Width = width;
 
-        int[] makeRuleCheckArray = new int[height];
-        Array.Fill(makeRuleCheckArray, (int)Math.Pow(2, width) - 1);
-        _ruleCheck = new ReadOnlyCollection<int>(makeRuleCheckArray);
+        int[] ruleCheckArray = new int[height];
+        Array.Fill(ruleCheckArray, (int)Math.Pow(2, width) - 1);
+        _ruleCheck = new ReadOnlyCollection<int>(ruleCheckArray);
 
         Placed = new int[height];
     }
 
     public void Update()
     {
+        if(CurrentTile != null)
+        {
+            CurrentTile.Proceed();
+        }
+
     }
 
 
