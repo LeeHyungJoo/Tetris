@@ -10,10 +10,10 @@ class GameTile
     public int X { get; set; }
     public int Y { get; set; }
     public int Direction { get; set; }
-    public (int[][] bits, int x)? Patterns { get; private init; }
+    public (int[] bits, int x)[]? Patterns { get; private init; }
 
 
-    public GameTile(int type, in (int[][] bits, int x) patterns)
+    public GameTile(int type, in (int[] bits, int x)[] patterns)
     {
         Type = type;
         Patterns = patterns!;

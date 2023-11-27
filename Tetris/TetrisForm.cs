@@ -126,14 +126,13 @@ namespace Tetris
             {
                 (int offSetY, int offSetX) = (_board.CurrentTile.Y, _board.CurrentTile.X);
 
-                for(int y = 0; y < _board.CurrentTile.Patterns?.bits[0].Length; y++)
+                for(int y = 0; y < _board.CurrentTile.Patterns?[0].bits.Length; y++)
                 {
-                    int patternMask = _board.CurrentTile.Patterns.Value.bits[0][y];
-                    patternMask <<= offSetX;
+                    int patternMask = (_board.CurrentTile.Patterns?[0].bits[y] ?? 0) << offSetX;
 
                     for (int x = offSetX; x < offSetX + _board.CurrentTile.X; x++)
                     {
-                        if ((patternMask & _xMasked[x]) == _xMasked[x])
+                        if ((patternMask & _xMasked[x]) != 0)
                         {
                             var rect = new Rectangle(
                                 _boardInitCoord.x + x * _size,

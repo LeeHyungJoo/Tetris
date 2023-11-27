@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,7 +42,7 @@ class Board
         _proceedTimer.Enabled = false;
         _proceedTimer.Elapsed += Update;
 
-        startTileY = -3;
+        startTileY = 0;
         startTileX = Width / 2 -1;
     }
 
@@ -85,15 +86,47 @@ class Board
         }
 
         //Board 크기 Y에 넘어가는지 체크 
-        if(CurrentTile.Y + CurrentTile.Patterns?.bits[0].Length + 1 > Height)
+        int tileHeight = CurrentTile.Patterns?[0].bits.Length ?? 0;
+        if (CurrentTile.Y + tileHeight + 1 > Height)
         {
-            CurrentTile.State = TileState.Placed;
+            PlaceTile();
             return;
         }
 
         //Placed 와 체크. 
+        int tileWidth = CurrentTile.Patterns?[0].x ?? 0;
+        for (int y = tileHeight -1; y >=  0; y--)
+        {
+            int patternMask = (CurrentTile.Patterns?[0].bits[y] ?? 0) << CurrentTile.X;
+            int placedMask = Placed[y + CurrentTile.Y + 1];
 
+            for(int x = 0; x < tileWidth; x++)
+            {
+                if ((patternMask & (placedMask << x)) != 0)
+                {
+                    PlaceTile();
+                    return;
+                }
+            }
+        }
 
         ++CurrentTile.Y;
+    }
+
+    private void PlaceTile()
+    {
+        Debug.WriteLine("PlaceTile");
+        CurrentTile!.State = TileState.Placed;
+        for(int y = 0; y < CurrentTile.Patterns?[0].bits.Length; y++)
+        {
+            int patternMask = (CurrentTile.Patterns?[0].bits[y] ?? 0);
+            for (int x = 0; x < CurrentTile.Patterns?[0].x; x++)
+            {
+                if ((patternMask & (1 << x)) != 0)
+                {
+                    Placed[y + CurrentTile.Y] |= (1 << (x + CurrentTile.X));
+                }
+            }
+        }
     }
 }
