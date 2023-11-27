@@ -22,7 +22,7 @@ class Board
 
     private readonly ReadOnlyCollection<int> _ruleCheck;
 
-    private System.Timers.Timer _proceedTimer;
+    private System.Timers.Timer _tileTimer;
     private int startTileY;
     private int startTileX;
 
@@ -37,11 +37,11 @@ class Board
 
         Placed = new int[height];
 
-        _proceedTimer = new System.Timers.Timer();
-        _proceedTimer.Interval = 1000;
-        _proceedTimer.AutoReset = true;
-        _proceedTimer.Enabled = false;
-        _proceedTimer.Elapsed += Update;
+        _tileTimer = new System.Timers.Timer();
+        _tileTimer.Interval = 1000;
+        _tileTimer.AutoReset = true;
+        _tileTimer.Enabled = false;
+        _tileTimer.Elapsed += Update;
 
         startTileY = 0;
         startTileX = Width / 2 -1;
@@ -58,7 +58,7 @@ class Board
         CurrentTile.Y = startTileY;
         CurrentTile.X = startTileX;
 
-        _proceedTimer.Start();
+        _tileTimer.Start();
     }
 
     private void Update(object? sender, ElapsedEventArgs e)
@@ -77,7 +77,7 @@ class Board
         if (Placed[0] != 0)
         {
             boardState = BoardState.Finished;
-            _proceedTimer.Stop();
+            _tileTimer.Stop();
         }
     }
 
