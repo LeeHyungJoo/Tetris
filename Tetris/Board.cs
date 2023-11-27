@@ -136,7 +136,6 @@ class Board
                     clearIndices[sumY]++;
                 }
             }
-
         }
 
         for (int y = Height - 1; y >= 0; y--)
@@ -198,7 +197,7 @@ class Board
     private bool PlacedCheckSides(int dirX)
     {
         int coordX = (CurrentTile?.X + CurrentTile?.Pattern.x + dirX ?? 0 ) -1;
-        if ( coordX == 0 || coordX > Width - 1)
+        if ( coordX <= 0 || coordX > Width - 1)
         {
             return true;
         }
