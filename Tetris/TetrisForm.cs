@@ -107,7 +107,7 @@ namespace Tetris
 
                     g.DrawRectangle(_gridPen, rect);
 
-                    if ((_board.Placed[y] & _xMasked[x]) == _xMasked[x])
+                    if ((_board.Placed[y] & _xMasked[x]) != 0)
                     {
                         placedRectList.Add(rect);
                     }
