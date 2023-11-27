@@ -55,7 +55,6 @@ namespace Tetris
 
         private void Update(object sender, EventArgs e)
         {
-            
             Invalidate();
         }
 
@@ -145,7 +144,6 @@ namespace Tetris
                         }
                     }
                 }
-
             }
 
             if(currentRectList.Count > 0)

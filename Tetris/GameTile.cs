@@ -53,7 +53,7 @@ class GameTile
         Debug.WriteLine("Turn Tile");
     }
 
-    public void Proceed()
+    public void Fall()
     {
         if (State != TileState.Active)
         {
@@ -62,6 +62,6 @@ class GameTile
         }
 
         Y++;
-        Debug.WriteLine("Proceed Tile");
+        Debug.WriteLine("Fall Tile");
     }
 }

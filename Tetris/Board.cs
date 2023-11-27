@@ -51,10 +51,9 @@ class Board
 
     private void Update(object? sender, ElapsedEventArgs e)
     {
-        
         if (CurrentTile != null)
         {
-            CurrentTile.Proceed();
+            CurrentTile.Fall();
         }
     }
 }
