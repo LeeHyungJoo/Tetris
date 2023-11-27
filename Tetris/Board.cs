@@ -114,22 +114,29 @@ class Board
         Debug.WriteLine($"MoveRight Y : {CurrentTile.Y}, X : {CurrentTile.X}");
     }
 
-    public void Fall()
+    public bool Fall()
     {
         if(CurrentTile == null || CurrentTile.State != TileState.Active)
         {
-            return;
+            return true;
         }
 
         if(PlacedCheckDown())
         {
             PlaceTile();
-            return;
+            return true;
         }
 
 
         ++CurrentTile.Y;
+        return false;
     }
+
+    public void HardFall()
+    {
+        while(!Fall()){}
+    }
+
 
     private void ClearCheck()
     {

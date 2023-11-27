@@ -48,7 +48,7 @@ namespace Tetris
             _frameTimer.Start();
 
             _inputTimer = new System.Windows.Forms.Timer();
-            _inputTimer.Interval = 100;
+            _inputTimer.Interval = 10;
             _inputTimer.Tick += ResetInput!;
             _inputTimer.Start();
         }
@@ -72,7 +72,7 @@ namespace Tetris
             {
                 switch (keyData)
                 {
-                    case Keys.Space:
+                    case Keys.Up:
                         _board.Turn(); break;
                     case Keys.Right:
                         _board.MoveRight(); break;
@@ -80,6 +80,8 @@ namespace Tetris
                         _board.MoveLeft(); break;
                     case Keys.Down:
                         _board.Fall(); break;
+                    case Keys.Space:
+                        _board.HardFall(); break;
                 }
                 _inputTimer.Start();
                 _canInput = false;
