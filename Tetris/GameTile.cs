@@ -12,6 +12,14 @@ class GameTile
     public int Direction { get; set; }
     public (int[] bits, int x)[]? Patterns { get; private init; }
 
+    public (int[] bits, int x) Pattern
+    {
+        get
+        {
+            return Patterns![Direction];
+        }
+    }
+
 
     public GameTile(int type, in (int[] bits, int x)[] patterns)
     {

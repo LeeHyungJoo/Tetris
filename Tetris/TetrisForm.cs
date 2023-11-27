@@ -72,6 +72,8 @@ namespace Tetris
             {
                 switch (keyData)
                 {
+                    case Keys.Space:
+                        _board.Turn(); break;
                     case Keys.Right:
                         _board.MoveRight(); break;
                     case Keys.Left:
@@ -129,11 +131,11 @@ namespace Tetris
             {
                 (int offSetY, int offSetX) = (_board.CurrentTile.Y, _board.CurrentTile.X);
 
-                for(int y = 0; y < _board.CurrentTile.Patterns?[0].bits.Length; y++)
+                for(int y = 0; y < _board.CurrentTile.Pattern.bits.Length; y++)
                 {
-                    int patternMask = (_board.CurrentTile.Patterns?[0].bits[y] ?? 0) << offSetX;
+                    int patternMask = _board.CurrentTile.Pattern.bits[y] << offSetX;
 
-                    for (int x = offSetX; x < offSetX + _board.CurrentTile.Patterns?[0].x ; x++)
+                    for (int x = offSetX; x < offSetX + _board.CurrentTile.Pattern.x ; x++)
                     {
                         if ((patternMask & _xMasked[x]) != 0)
                         {

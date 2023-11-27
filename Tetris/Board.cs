@@ -45,6 +45,8 @@ class Board
 
         startTileY = 0;
         startTileX = Width / 2 -1;
+
+        Placed[height - 1] = 1024 - 2;
     }
 
     public void Start()
@@ -62,6 +64,7 @@ class Board
     private void Update(object? sender, ElapsedEventArgs e)
     {
         Fall();
+        ClearCheck();
 
         if (CurrentTile?.State == TileState.Placed)
         {
@@ -76,6 +79,11 @@ class Board
             boardState = BoardState.Finished;
             _proceedTimer.Stop();
         }
+    }
+
+    public void Turn()
+    {
+        CurrentTile!.Direction = (CurrentTile.Direction + 1) % 4;
     }
 
     public void MoveLeft()
@@ -115,14 +123,43 @@ class Board
         ++CurrentTile.Y;
     }
 
+    private void ClearCheck()
+    {
+        List<int> clearIndices = Enumerable.Repeat(0, Height).ToList();
+
+        for (int y = Height - 1; y >= 0; y--)
+        {
+            if (Placed[y] == _ruleCheck[y])
+            {
+                for (int y2 = y; y2 >= 0; y2--)
+                {
+                    clearIndices[y2]++;
+                }
+            }
+
+        }
+
+        for (int y = Height - 1; y >= 0; y--)
+        {
+            if (y - clearIndices[y] < 0)
+            {
+                Placed[y] = 0;
+            }
+            else
+            {
+                Placed[y] = Placed[y - clearIndices[y]];
+            }
+        }
+    }
+
     private void PlaceTile()
     {
         Debug.WriteLine("PlaceTile");
         CurrentTile!.State = TileState.Placed;
-        for(int y = 0; y < CurrentTile.Patterns?[0].bits.Length; y++)
+        for(int y = 0; y < CurrentTile.Pattern.bits.Length; y++)
         {
-            int patternMask = (CurrentTile.Patterns?[0].bits[y] ?? 0);
-            for (int x = 0; x < CurrentTile.Patterns?[0].x; x++)
+            int patternMask = CurrentTile.Pattern.bits[y];
+            for (int x = 0; x < CurrentTile.Pattern.x; x++)
             {
                 if ((patternMask & (1 << x)) != 0)
                 {
@@ -134,16 +171,16 @@ class Board
 
     private bool PlacedCheckDown()
     {
-        if (CurrentTile?.Y + CurrentTile?.Patterns?[0].bits.Length + 1 > Height)
+        if (CurrentTile?.Y + CurrentTile?.Pattern.bits.Length + 1 > Height)
         {
             return true;
         }
 
-        int tileHeight = CurrentTile?.Patterns?[0].bits.Length ?? 0;
-        int tileWidth = CurrentTile?.Patterns?[0].x ?? 0;
+        int tileHeight = CurrentTile?.Pattern.bits.Length ?? 0;
+        int tileWidth = CurrentTile?.Pattern.x ?? 0;
         for (int y = tileHeight - 1; y >= 0; y--)
         {
-            int patternMask = (CurrentTile!.Patterns?[0].bits[y] ?? 0) << CurrentTile.X;
+            int patternMask = CurrentTile!.Pattern.bits[y] << CurrentTile.X;
             int placedMask = Placed[y + CurrentTile.Y + 1];
 
             for (int x = 0; x < tileWidth; x++)
@@ -160,17 +197,17 @@ class Board
 
     private bool PlacedCheckSides(int dirX)
     {
-        int coordX = (CurrentTile?.X + CurrentTile?.Patterns?[0].x + dirX ?? 0 ) -1;
+        int coordX = (CurrentTile?.X + CurrentTile?.Pattern.x + dirX ?? 0 ) -1;
         if ( coordX == 0 || coordX > Width - 1)
         {
             return true;
         }
 
-        int tileHeight = CurrentTile?.Patterns?[0].bits.Length ?? 0;
-        int tileWidth = CurrentTile?.Patterns?[0].x ?? 0;
+        int tileHeight = CurrentTile?.Pattern.bits.Length ?? 0;
+        int tileWidth = CurrentTile?.Pattern.x ?? 0;
         for (int y = tileHeight - 1; y >= 0; y--)
         {
-            int patternMask = (CurrentTile!.Patterns?[0].bits[y] ?? 0) << CurrentTile.X + dirX;
+            int patternMask = CurrentTile!.Pattern.bits[y] << CurrentTile.X + dirX;
             int placedMask = Placed[y + CurrentTile.Y];
 
             for (int x = 0; x < tileWidth; x++)
