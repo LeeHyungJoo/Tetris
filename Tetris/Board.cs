@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.Devices;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -10,8 +11,8 @@ namespace Tetris;
 
 class Board
 {
-    public int Height { get; private set; }
-    public int Width { get; private set; }
+    public int Height { get; private init; }
+    public int Width { get; private init; }
     public Queue<int>? TileQ { get; private set; }
     public GameTile? CurrentTile { get; private set; }
 
@@ -19,7 +20,7 @@ class Board
 
     private readonly ReadOnlyCollection<int> _ruleCheck;
 
-    private System.Timers.Timer _timer;
+    private System.Timers.Timer _proceedTimer;
 
     public Board(int height, int width)
     {
@@ -32,11 +33,11 @@ class Board
 
         Placed = new int[height];
 
-        _timer = new System.Timers.Timer();
-        _timer.Interval = 1000;
-        _timer.AutoReset = true;
-        _timer.Enabled = false;
-        _timer.Elapsed += Update;
+        _proceedTimer = new System.Timers.Timer();
+        _proceedTimer.Interval = 1000;
+        _proceedTimer.AutoReset = true;
+        _proceedTimer.Enabled = false;
+        _proceedTimer.Elapsed += Update;
     }
 
     public void Start(int tileY, int tileX)
@@ -45,11 +46,12 @@ class Board
         CurrentTile.State = TileState.Active;
         CurrentTile.Y = tileY;
         CurrentTile.X = tileX;
-        _timer.Start();
+        _proceedTimer.Start();
     }
 
     private void Update(object? sender, ElapsedEventArgs e)
     {
+        
         if (CurrentTile != null)
         {
             CurrentTile.Proceed();

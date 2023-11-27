@@ -1,3 +1,5 @@
+using Microsoft.VisualBasic.Devices;
+using System.Diagnostics;
 using System.Drawing;
 using System.Timers;
 
@@ -15,8 +17,9 @@ namespace Tetris
 
         private int[] _xMasked;
 
-        private System.Windows.Forms.Timer _timer;
-
+        private System.Windows.Forms.Timer _frameTimer;
+        private System.Windows.Forms.Timer _inputTimer;
+        private bool _canInput;
 
         public TetrisForm()
         {
@@ -38,16 +41,47 @@ namespace Tetris
             }
 
             _board.Start(0,4);
-            _timer = new System.Windows.Forms.Timer();
 
-            _timer.Interval = 100;
-            _timer.Tick += Update!;
-            _timer.Start();
+            _frameTimer = new System.Windows.Forms.Timer();
+            _frameTimer.Interval = 50;
+            _frameTimer.Tick += Update!;
+            _frameTimer.Start();
+
+            _inputTimer = new System.Windows.Forms.Timer();
+            _inputTimer.Interval = 100;
+            _inputTimer.Tick += ResetInput!;
+            _inputTimer.Start();
         }
 
-        void Update(object sender, EventArgs e)
+        private void Update(object sender, EventArgs e)
         {
+            
             Invalidate();
+        }
+
+        private void ResetInput(object sender, EventArgs e)
+        {
+            if(!_canInput)
+            {
+                _canInput = true;
+            }
+        }
+
+        protected override bool IsInputKey(Keys keyData)
+        {
+            if(_canInput)
+            {
+                switch (keyData)
+                {
+                    case Keys.Right:
+                        _board.CurrentTile?.MoveRight(); break;
+                    case Keys.Left:
+                        _board.CurrentTile?.MoveLeft(); break;
+                }
+                _canInput = false;
+            }
+
+            return base.IsInputKey(keyData);
         }
 
         private void DrawUI(Graphics g)

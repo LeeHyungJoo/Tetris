@@ -18,6 +18,30 @@ class GameTile
         Debug.WriteLine($"Create GameTile {Type}");
     }
 
+    public void MoveRight()
+    {
+        if (State != TileState.Active)
+        {
+            Debug.WriteLine("Invalid State");
+            return;
+        }
+
+        X++;
+        Debug.WriteLine("MoveRight Tile");
+    }
+
+    public void MoveLeft()
+    {
+        if (State != TileState.Active)
+        {
+            Debug.WriteLine("Invalid State");
+            return;
+        }
+
+        X--;
+        Debug.WriteLine("MoveLeft Tile");
+    }
+
     public void Turn()
     {
         if(State != TileState.Active)
