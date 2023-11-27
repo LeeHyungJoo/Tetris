@@ -12,6 +12,7 @@ namespace Tetris;
 
 class Board
 {
+    public BoardState boardState { get; private set; }
     public int Height { get; private init; }
     public int Width { get; private init; }
     public Queue<int>? TileQ { get; private set; }
@@ -48,16 +49,19 @@ class Board
 
     public void Start()
     {
+        boardState = BoardState.Active;
+
         CurrentTile = TileFactory.Instance.CreateGameTile();
         CurrentTile.State = TileState.Active;
         CurrentTile.Y = startTileY;
         CurrentTile.X = startTileX;
+
         _proceedTimer.Start();
     }
 
     private void Update(object? sender, ElapsedEventArgs e)
     {
-        if(CurrentTile?.State == TileState.Placed)
+        if (CurrentTile?.State == TileState.Placed)
         {
             CurrentTile = TileFactory.Instance.CreateGameTile();
             CurrentTile.State = TileState.Active;
@@ -66,6 +70,7 @@ class Board
         }
 
         Fall();
+        LoseCheck();
     }
 
     public void MoveLeft()
@@ -102,7 +107,7 @@ class Board
 
             for(int x = 0; x < tileWidth; x++)
             {
-                if ((patternMask & (placedMask << x)) != 0)
+                if (((patternMask & placedMask) & (1 << (x + CurrentTile.X))) != 0)
                 {
                     PlaceTile();
                     return;
@@ -127,6 +132,15 @@ class Board
                     Placed[y + CurrentTile.Y] |= (1 << (x + CurrentTile.X));
                 }
             }
+        }
+    }
+
+    private void LoseCheck()
+    {
+        if (Placed[0] != 0)
+        {
+            boardState = BoardState.Finished;
+            _proceedTimer.Stop();
         }
     }
 }

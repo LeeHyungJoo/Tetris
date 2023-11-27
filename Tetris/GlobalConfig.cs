@@ -7,3 +7,10 @@ enum TileState
     Active,
     Placed
 }
+
+enum BoardState
+{
+    None,
+    Active,
+    Finished
+}
