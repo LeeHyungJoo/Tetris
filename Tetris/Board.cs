@@ -83,7 +83,13 @@ class Board
 
     public void Turn()
     {
-        CurrentTile!.Direction = (CurrentTile.Direction + 1) % 4;
+        if(PlacedCheckTurn((CurrentTile!.Direction + 1) % 4))
+        {
+            return;
+        }
+
+        CurrentTile.Direction = (CurrentTile.Direction + 1) % 4;
+        Debug.WriteLine($"Turn Y : {CurrentTile.Y}, X : {CurrentTile.X}");
     }
 
     public void MoveLeft()
@@ -94,6 +100,7 @@ class Board
         }
 
         --CurrentTile!.X;
+        Debug.WriteLine($"MoveLeft Y : {CurrentTile.Y}, X : {CurrentTile.X}");
     }
 
     public void MoveRight()
@@ -104,6 +111,7 @@ class Board
         }
 
         ++CurrentTile!.X;
+        Debug.WriteLine($"MoveRight Y : {CurrentTile.Y}, X : {CurrentTile.X}");
     }
 
     public void Fall()
@@ -196,11 +204,12 @@ class Board
 
     private bool PlacedCheckSides(int dirX)
     {
-        int coordX = (CurrentTile?.X + CurrentTile?.Pattern.x + dirX ?? 0 ) -1;
-        if ( coordX <= 0 || coordX > Width - 1)
+        int coordX = (CurrentTile?.X + CurrentTile?.Pattern.x + dirX ?? 0 );
+        if ( coordX < 0 || coordX > Width || CurrentTile?.X + dirX < 0 || CurrentTile?.X + dirX > Width)
         {
             return true;
         }
+
 
         int tileHeight = CurrentTile?.Pattern.bits.Length ?? 0;
         int tileWidth = CurrentTile?.Pattern.x ?? 0;
@@ -212,6 +221,36 @@ class Board
             for (int x = 0; x < tileWidth; x++)
             {
                 if (((patternMask & placedMask) & (1 << (x + CurrentTile.X + dirX))) != 0)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private bool PlacedCheckTurn(int dir)
+    {
+        var pattern = CurrentTile?.Patterns![dir]!;
+        
+        int coordX = (CurrentTile?.X + pattern.Value.x ?? 0);
+        if (coordX < 0 || coordX > Width || CurrentTile?.X < 0 || CurrentTile?.X > Width)
+        {
+            return true;
+        }
+
+
+        int tileHeight = pattern.Value.bits.Length;
+        int tileWidth = pattern.Value.x;
+        for (int y = tileHeight - 1; y >= 0; y--)
+        {
+            int patternMask = pattern.Value.bits[y] << CurrentTile!.X;
+            int placedMask = Placed[y + CurrentTile.Y];
+
+            for (int x = 0; x < tileWidth; x++)
+            {
+                if (((patternMask & placedMask) & (1 << (x + CurrentTile.X))) != 0)
                 {
                     return true;
                 }
