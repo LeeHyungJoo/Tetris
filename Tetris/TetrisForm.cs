@@ -7,7 +7,7 @@ namespace Tetris
 {
     public partial class TetrisForm : Form
     {
-        private Board _board;
+        private readonly Board _board;
         private (int y, int x) _boardInitCoord;
         private int _size;
 
@@ -73,9 +73,9 @@ namespace Tetris
                 switch (keyData)
                 {
                     case Keys.Right:
-                        _board.CurrentTile?.MoveRight(); break;
+                        _board.MoveRight(); break;
                     case Keys.Left:
-                        _board.CurrentTile?.MoveLeft(); break;
+                        _board.MoveLeft(); break;
                 }
                 _canInput = false;
             }
@@ -126,12 +126,12 @@ namespace Tetris
             {
                 (int offSetY, int offSetX) = (_board.CurrentTile.Y, _board.CurrentTile.X);
 
-                for(int y = 0; y < _board.CurrentTile.Patterns?[0].Length; y++)
+                for(int y = 0; y < _board.CurrentTile.Patterns?.bits[0].Length; y++)
                 {
-                    int patternMask = _board.CurrentTile.Patterns[0][y];
+                    int patternMask = _board.CurrentTile.Patterns.Value.bits[0][y];
                     patternMask <<= offSetX;
 
-                    for (int x = 0; x < _board.Width; x++)
+                    for (int x = offSetX; x < offSetX + _board.CurrentTile.X; x++)
                     {
                         if ((patternMask & _xMasked[x]) == _xMasked[x])
                         {

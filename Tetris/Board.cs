@@ -51,9 +51,26 @@ class Board
 
     private void Update(object? sender, ElapsedEventArgs e)
     {
-        if (CurrentTile != null)
+        Fall();
+    }
+
+    public void MoveLeft()
+    {
+
+    }
+
+    public void MoveRight()
+    {
+
+    }
+
+    public void Fall()
+    {
+        if(CurrentTile == null)
         {
-            CurrentTile.Fall();
+            return;
         }
+
+        ++CurrentTile.Y;
     }
 }
