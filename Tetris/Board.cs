@@ -131,9 +131,9 @@ class Board
         {
             if (Placed[y] == _ruleCheck[y])
             {
-                for (int y2 = y; y2 >= 0; y2--)
+                for (int sumY = y; sumY >= 0; sumY--)
                 {
-                    clearIndices[y2]++;
+                    clearIndices[sumY]++;
                 }
             }
 
