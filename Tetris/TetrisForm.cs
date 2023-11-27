@@ -76,7 +76,10 @@ namespace Tetris
                         _board.MoveRight(); break;
                     case Keys.Left:
                         _board.MoveLeft(); break;
+                    case Keys.Down:
+                        _board.Fall(); break;
                 }
+                _inputTimer.Start();
                 _canInput = false;
             }
 
@@ -130,7 +133,7 @@ namespace Tetris
                 {
                     int patternMask = (_board.CurrentTile.Patterns?[0].bits[y] ?? 0) << offSetX;
 
-                    for (int x = offSetX; x < offSetX + _board.CurrentTile.X; x++)
+                    for (int x = offSetX; x < offSetX + _board.CurrentTile.Patterns?[0].x ; x++)
                     {
                         if ((patternMask & _xMasked[x]) != 0)
                         {
