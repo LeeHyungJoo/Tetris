@@ -21,6 +21,8 @@ class Board
     private readonly ReadOnlyCollection<int> _ruleCheck;
 
     private System.Timers.Timer _proceedTimer;
+    private int startTileY;
+    private int startTileX;
 
     public Board(int height, int width)
     {
@@ -34,23 +36,34 @@ class Board
         Placed = new int[height];
 
         _proceedTimer = new System.Timers.Timer();
-        _proceedTimer.Interval = 1000;
+        _proceedTimer.Interval = 100;
         _proceedTimer.AutoReset = true;
         _proceedTimer.Enabled = false;
         _proceedTimer.Elapsed += Update;
+
+        startTileY = -3;
+        startTileX = Width / 2 -1;
     }
 
-    public void Start(int tileY, int tileX)
+    public void Start()
     {
         CurrentTile = TileFactory.Instance.CreateGameTile();
         CurrentTile.State = TileState.Active;
-        CurrentTile.Y = tileY;
-        CurrentTile.X = tileX;
+        CurrentTile.Y = startTileY;
+        CurrentTile.X = startTileX;
         _proceedTimer.Start();
     }
 
     private void Update(object? sender, ElapsedEventArgs e)
     {
+        if(CurrentTile?.State == TileState.Placed)
+        {
+            CurrentTile = TileFactory.Instance.CreateGameTile();
+            CurrentTile.State = TileState.Active;
+            CurrentTile.Y = startTileY;
+            CurrentTile.X = startTileX;
+        }
+
         Fall();
     }
 
@@ -66,10 +79,20 @@ class Board
 
     public void Fall()
     {
-        if(CurrentTile == null)
+        if(CurrentTile == null || CurrentTile.State != TileState.Active)
         {
             return;
         }
+
+        //Board 크기 Y에 넘어가는지 체크 
+        if(CurrentTile.Y + CurrentTile.Patterns?.bits[0].Length + 1 > Height)
+        {
+            CurrentTile.State = TileState.Placed;
+            return;
+        }
+
+        //Placed 와 체크. 
+
 
         ++CurrentTile.Y;
     }

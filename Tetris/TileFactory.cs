@@ -82,7 +82,7 @@ class TileFactory
 
     public GameTile CreateGameTile()
     {
-        int ranIdx = _random.Next(0, _patternInfos.Count) + 1;
-        return new GameTile(_patternInfos[ranIdx]) { Type = ranIdx};
+        int randType = _random.Next(0, _patternInfos.Count) + 1;
+        return new GameTile(randType, _patternInfos[randType]);
     }
 }

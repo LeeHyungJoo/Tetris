@@ -13,8 +13,9 @@ class GameTile
     public (int[][] bits, int x)? Patterns { get; private init; }
 
 
-    public GameTile(in (int[][] bits, int x) patterns)
+    public GameTile(int type, in (int[][] bits, int x) patterns)
     {
+        Type = type;
         Patterns = patterns!;
         Debug.WriteLine($"Create GameTile {Type}");
     }

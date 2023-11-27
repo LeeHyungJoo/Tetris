@@ -40,7 +40,7 @@ namespace Tetris
                 _xMasked[i] = (1 << i);
             }
 
-            _board.Start(0,4);
+            _board.Start();
 
             _frameTimer = new System.Windows.Forms.Timer();
             _frameTimer.Interval = 50;
