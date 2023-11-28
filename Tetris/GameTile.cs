@@ -25,6 +25,5 @@ class GameTile
     {
         Type = type;
         Patterns = patterns!;
-        Debug.WriteLine($"Create GameTile {Type}");
     }
 }
