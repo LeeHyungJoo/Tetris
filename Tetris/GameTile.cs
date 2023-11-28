@@ -20,7 +20,6 @@ class GameTile
         }
     }
 
-
     public GameTile(int type, in (int[] bits, int x)[] patterns)
     {
         Type = type;

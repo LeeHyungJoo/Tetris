@@ -69,7 +69,6 @@ class TileFactory
                         {
                             continue;
                         }
-
                         value |= (1 << idxC);
                     }
 

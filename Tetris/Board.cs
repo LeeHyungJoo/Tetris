@@ -125,7 +125,6 @@ class Board
             return true;
         }
 
-
         ++CurrentTile.Y;
         return false;
     }
