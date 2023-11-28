@@ -45,7 +45,7 @@ class TileFactory
                     target[d][idxC] = new int[sizeR];
                     for (int idxR = 0; idxR < sizeR; idxR++)
                     {
-                        target[d][idxC][idxR] = target[d - 1][idxR][idxC];
+                        target[d][idxC][idxR] = target[d - 1][idxR][sizeC - idxC - 1];
                     }
                 }
             }
