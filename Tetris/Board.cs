@@ -21,11 +21,22 @@ class Board
 
     public readonly int[] Placed;
 
-    public int Score { get; private set; } 
+    public int Score { get; private set; }
+
+    private DateTime _startTime;
+
+    public TimeSpan FinalRecordTime { get; private set; }
+    public TimeSpan RecordTime { 
+        get
+        {
+            return DateTime.Now - _startTime;
+        }
+    }
 
     private readonly ReadOnlyCollection<int> _ruleCheck;
 
     private System.Timers.Timer _tileTimer;
+
     private int startTileY;
     private int startTileX;
 
@@ -33,7 +44,7 @@ class Board
     {
         Height = height;
         Width = width;
-
+        
         int[] ruleCheckArray = new int[height];
         Array.Fill(ruleCheckArray, (int)Math.Pow(2, width) - 1);
         _ruleCheck = new ReadOnlyCollection<int>(ruleCheckArray);
@@ -52,6 +63,7 @@ class Board
         Placed[height - 1] = 1024 - 2;
     }
 
+
     public void Start()
     {
         boardState = BoardState.Active;
@@ -61,6 +73,7 @@ class Board
         CurrentTile.Y = startTileY;
         CurrentTile.X = startTileX;
 
+        _startTime = DateTime.Now;
         _tileTimer.Start();
     }
 
@@ -81,6 +94,7 @@ class Board
         {
             boardState = BoardState.Finished;
             _tileTimer.Stop();
+            FinalRecordTime = RecordTime;
         }
     }
 

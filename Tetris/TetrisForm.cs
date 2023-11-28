@@ -57,6 +57,7 @@ namespace Tetris
         {
             Invalidate();
             lb_score.Text = _board.Score.ToString();
+            lb_time.Text = _board.boardState == BoardState.Finished ? _board.FinalRecordTime.ToString(@"hh\:mm\:ss\.fff") : _board.RecordTime.ToString(@"hh\:mm\:ss\.fff");
         }
 
         private void ResetInput(object sender, EventArgs e)
@@ -164,5 +165,6 @@ namespace Tetris
             base.OnPaint(e);
             DrawUI(e.Graphics);
         }
+
     }
 }
