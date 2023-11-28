@@ -21,6 +21,8 @@ class Board
 
     public readonly int[] Placed;
 
+    public int Score { get; private set; } 
+
     private readonly ReadOnlyCollection<int> _ruleCheck;
 
     private System.Timers.Timer _tileTimer;
@@ -137,26 +139,34 @@ class Board
 
     private void ClearCheck()
     {
-        bool isClearedLine = false;
+        int combo = 0;
         for (int y = Height - 1; y >= 0; y--)
         {
             if (Placed[y] == _ruleCheck[y])
             {
-                isClearedLine = true;
+                combo++; 
                 Placed[y] = 0;
             }
         }
 
-        if(isClearedLine)
+        if (combo > 0)
         {
-            Array.Sort(Placed, (lhs, rhs) =>
+            int writeIdx = Height - 1;
+            for (int readIdx = Height - 1; readIdx >= 0; readIdx--)
             {
-                if (lhs == 0 && rhs != 0)
-                    return -1;
-                if (lhs != 0 && rhs == 0)
-                    return 1;
-                return 0;
-            });
+                if (Placed[readIdx] != 0)
+                {
+                    Placed[writeIdx--] = Placed[readIdx];
+                }
+            }
+
+            while (writeIdx >= 0)
+            {
+                Placed[writeIdx--] = 0;
+            }
+
+            Score += (int)Math.Pow(2, combo) * 5;
+            _tileTimer.Start();
         }
     }
 

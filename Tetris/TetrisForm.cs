@@ -32,7 +32,7 @@ namespace Tetris
 
             _board = new Board(24, 10)!;
             _size = 18;
-            _boardInitCoord = (20, 20);
+            _boardInitCoord = (20, 10);
 
             _xMasked = new int[10];
             for (int i = 0; i < 10; i++)
@@ -56,11 +56,12 @@ namespace Tetris
         private void Update(object sender, EventArgs e)
         {
             Invalidate();
+            lb_score.Text = _board.Score.ToString();
         }
 
         private void ResetInput(object sender, EventArgs e)
         {
-            if(!_canInput)
+            if (!_canInput)
             {
                 _canInput = true;
             }
@@ -68,7 +69,7 @@ namespace Tetris
 
         protected override bool IsInputKey(Keys keyData)
         {
-            if(_canInput)
+            if (_canInput)
             {
                 switch (keyData)
                 {
@@ -94,10 +95,10 @@ namespace Tetris
         {
             //OutLine
             g.DrawRectangle(
-                _gridPen, 
+                _gridPen,
                 _boardInitCoord.x - 1,
                 _boardInitCoord.y - 1,
-                _size * _board.Width + 1 ,
+                _size * _board.Width + 1,
                 _size * _board.Height + 1
                 );
 
@@ -129,15 +130,15 @@ namespace Tetris
 
             //Current Tile
             List<Rectangle> currentRectList = new List<Rectangle>();
-            if(_board.CurrentTile != null && _board.CurrentTile.State == TileState.Active)
+            if (_board.CurrentTile != null && _board.CurrentTile.State == TileState.Active)
             {
                 (int offSetY, int offSetX) = (_board.CurrentTile.Y, _board.CurrentTile.X);
 
-                for(int y = 0; y < _board.CurrentTile.Pattern.bits.Length; y++)
+                for (int y = 0; y < _board.CurrentTile.Pattern.bits.Length; y++)
                 {
                     int patternMask = _board.CurrentTile.Pattern.bits[y] << offSetX;
 
-                    for (int x = offSetX; x < offSetX + _board.CurrentTile.Pattern.x ; x++)
+                    for (int x = offSetX; x < offSetX + _board.CurrentTile.Pattern.x; x++)
                     {
                         if ((patternMask & _xMasked[x]) != 0)
                         {
@@ -152,7 +153,7 @@ namespace Tetris
                 }
             }
 
-            if(currentRectList.Count > 0)
+            if (currentRectList.Count > 0)
             {
                 g.FillRectangles(_currentTileBrush, currentRectList.ToArray());
             }
