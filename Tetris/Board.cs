@@ -136,8 +136,6 @@ class Board
         _tileTimer.Start();
     }
 
-
-
     private void ClearCheck()
     {
         bool isClearedLine = false;
@@ -214,7 +212,6 @@ class Board
             return true;
         }
 
-
         int tileHeight = CurrentTile?.Pattern.bits.Length ?? 0;
         int tileWidth = CurrentTile?.Pattern.x ?? 0;
         for (int y = tileHeight - 1; y >= 0; y--)
@@ -243,7 +240,6 @@ class Board
         {
             return true;
         }
-
 
         int tileHeight = pattern.Value.bits.Length;
         int tileWidth = pattern.Value.x;
