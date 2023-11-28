@@ -129,7 +129,7 @@ namespace Tetris
 
             //Current Tile
             List<Rectangle> currentRectList = new List<Rectangle>();
-            if(_board.CurrentTile != null)
+            if(_board.CurrentTile != null && _board.CurrentTile.State == TileState.Active)
             {
                 (int offSetY, int offSetX) = (_board.CurrentTile.Y, _board.CurrentTile.X);
 

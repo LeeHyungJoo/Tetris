@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Tetris;
 
@@ -89,7 +90,6 @@ class Board
         }
 
         CurrentTile.Direction = (CurrentTile.Direction + 1) % 4;
-        Debug.WriteLine($"Turn Y : {CurrentTile.Y}, X : {CurrentTile.X}");
     }
 
     public void MoveLeft()
@@ -100,7 +100,6 @@ class Board
         }
 
         --CurrentTile!.X;
-        Debug.WriteLine($"MoveLeft Y : {CurrentTile.Y}, X : {CurrentTile.X}");
     }
 
     public void MoveRight()
@@ -111,7 +110,6 @@ class Board
         }
 
         ++CurrentTile!.X;
-        Debug.WriteLine($"MoveRight Y : {CurrentTile.Y}, X : {CurrentTile.X}");
     }
 
     public bool Fall()
@@ -135,34 +133,33 @@ class Board
     public void HardFall()
     {
         while(!Fall()){}
+        _tileTimer.Start();
     }
+
 
 
     private void ClearCheck()
     {
-        List<int> clearIndices = Enumerable.Repeat(0, Height).ToList();
-
+        bool isClearedLine = false;
         for (int y = Height - 1; y >= 0; y--)
         {
             if (Placed[y] == _ruleCheck[y])
             {
-                for (int sumY = y; sumY >= 0; sumY--)
-                {
-                    clearIndices[sumY]++;
-                }
+                isClearedLine = true;
+                Placed[y] = 0;
             }
         }
 
-        for (int y = Height - 1; y >= 0; y--)
+        if(isClearedLine)
         {
-            if (y - clearIndices[y] < 0)
+            Array.Sort(Placed, (lhs, rhs) =>
             {
-                Placed[y] = 0;
-            }
-            else
-            {
-                Placed[y] = Placed[y - clearIndices[y]];
-            }
+                if (lhs == 0 && rhs != 0)
+                    return -1;
+                if (lhs != 0 && rhs == 0)
+                    return 1;
+                return 0;
+            });
         }
     }
 
